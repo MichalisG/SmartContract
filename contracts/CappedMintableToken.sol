@@ -4,12 +4,12 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Capped.
 
 contract CappedMintableToken is ERC20Capped{
 
-    constructor(uint256 cap) ERC20Capped(cap) public {
-
-    }
+    constructor(uint256 cap) ERC20Capped(cap) public {}
 
     function mint(address _to, uint256 _amount) public returns (bool){
         return super.mint(_to,_amount);
-        // return true;
+    }
+    function transfer(address _to, uint256 _amount) public returns (bool){
+        return super.transfer(_to,_amount);
     }
 }
