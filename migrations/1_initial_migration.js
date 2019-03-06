@@ -1,5 +1,8 @@
-const Migrations = artifacts.require("Migrations");
+const TokenDistribution = artifacts.require("TokenDistribution");
+const CappedMintableToken = artifacts.require("CappedMintableToken");
 
 module.exports = function(deployer) {
-  deployer.deploy(Migrations);
+  deployer.deploy(CappedMintableToken, 1000000).then(()=>{
+    deployer.deploy(TokenDistribution, CappedMintableToken.address);
+  });
 };

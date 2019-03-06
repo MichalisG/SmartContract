@@ -11,7 +11,8 @@ contract TokenDistribution{
     function distribute(address[] memory contributors, uint256[] memory balances) public {
         CappedMintableToken token = CappedMintableToken(addr);
         for(uint i=0; i<contributors.length; i++){
-            token.transfer(contributors[i], balances[i]);
+            token.mint(contributors[i], balances[i]);
+            // token.transfer(contributors[i], balances[i]);
         }
     }
 }

@@ -9,7 +9,4 @@ contract CappedMintableToken is ERC20Capped{
     function mint(address _to, uint256 _amount) public returns (bool){
         return super.mint(_to,_amount);
     }
-    function transfer(address _to, uint256 _amount) public returns (bool){
-        return super.transfer(_to,_amount);
-    }
 }

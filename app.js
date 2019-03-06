@@ -24,9 +24,8 @@ async function run(){
   let TokenDistribution  = await deployContract('./build/contracts/TokenDistribution.json', acount, [CappedMintableToken.options.address]);
   await CappedMintableToken.methods.mint(CappedMintableToken.options.address, 30000).send({from: acount.address});
   await CappedMintableToken.methods.addMinter(TokenDistribution.options.address).send({from: acount.address});
-  console.log('----------');
   try{
-    await TokenDistribution.methods.distribute(['0xF215e07458aa6ad6472961Ec407FAEDb65E5188C'],[1000,2000]).send({from: acount.address});
+    await TokenDistribution.methods.distribute(['0xF215e07458aa6ad6472961Ec407FAEDb65E5188C','0x0AEDACa4451B87DB1704b9379f544785b46E2f02'],[1000,2000]).send({from: acount.address});
   }catch(err){
     console.log(err);
   }
