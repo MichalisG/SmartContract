@@ -1,0 +1,27 @@
+{
+  "name": "coincierge.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "openzeppelin-solidity": "^2.1.3",
+    "web3": "^1.0.0-beta.47"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichalisG/SmartContract.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MichalisG/SmartContract/issues"
+  },
+  "homepage": "https://github.com/MichalisG/SmartContract#readme"
+}
