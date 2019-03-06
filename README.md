@@ -2,6 +2,6 @@
 
 RUN:
 
-npm intall
-truffle compile
-node app.js
+npm intall <br>
+truffle compile<br>
+node app.js<br>
