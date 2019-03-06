@@ -1,14 +1,11 @@
 const Web3 = require('web3');
 const fs = require('fs');
 
-
-const selectedHost = 'http://127.0.0.1:7545';
-
-
-const acount = {
+const account = {
   address: '0x6D2D0C8d05D39B96FEf53a74B61e9974C0029a00',
   key:'79f6211271c58baf8f2eb17651881a935584e845f06589dcfde811269f00c3ca'
 };
+
 const balancesheet = {
   '0xBFc79d03a9B592F93edb677e7815F9DA41C14475': 1000,
   '0xF215e07458aa6ad6472961Ec407FAEDb65E5188C': 2000,
@@ -17,30 +14,41 @@ const balancesheet = {
   '0x0AEDACa4451B87DB1704b9379f544785b46E2f02': 5000
 };
 
+const selectedHost = 'http://127.0.0.1:7545';
 const web3 = new Web3(new Web3.providers.HttpProvider(selectedHost));
 
+run();
+
+//main function
 async function run(){
-  let CappedMintableToken = await deployContract('./build/contracts/CappedMintableToken.json', acount, [1000000]);
-  let TokenDistribution  = await deployContract('./build/contracts/TokenDistribution.json', acount, [CappedMintableToken.options.address]);
-  await CappedMintableToken.methods.mint(CappedMintableToken.options.address, 30000).send({from: acount.address});
-  await CappedMintableToken.methods.addMinter(TokenDistribution.options.address).send({from: acount.address});
+  let b_addresses = Object.keys(balancesheet);
+  let b_values = Object.values(balancesheet);
+  //Deploy CappedMintableToken
+  let CappedMintableToken = await deployContract('./build/contracts/CappedMintableToken.json', account, [1000000]);
+  
+  //Deploy TokenDistribution 
+  let TokenDistribution  = await deployContract('./build/contracts/TokenDistribution.json', account, [CappedMintableToken.options.address]);
+  
+
+  await CappedMintableToken.methods.mint(TokenDistribution.options.address, 15000).send({from: account.address});
+  
+  let balance = await CappedMintableToken.methods.balanceOf(TokenDistribution.options.address).call();
+  console.log('Total balance: ' + balance);
   try{
-    await TokenDistribution.methods.distribute(['0xF215e07458aa6ad6472961Ec407FAEDb65E5188C','0x0AEDACa4451B87DB1704b9379f544785b46E2f02'],[1000,2000]).send({from: acount.address});
+    await TokenDistribution.methods.distribute(b_addresses,b_values).send({from: account.address, gas: 800000});
   }catch(err){
     console.log(err);
   }
-  let balance = await CappedMintableToken.methods.balanceOf(CappedMintableToken.options.address).call();
-  console.log(balance);
-  balance = await CappedMintableToken.methods.balanceOf('0x7158d92Ac4dbAd955E01DDa0a3b0b014224D055e').call();
-  console.log(balance);
-  balance = await CappedMintableToken.methods.balanceOf('0xF215e07458aa6ad6472961Ec407FAEDb65E5188C').call();
-  console.log(balance);
-  balance = await CappedMintableToken.methods.balanceOf(CappedMintableToken.options.address).call();
-  console.log(balance);
+  for(let i=0; i<b_addresses.length; i++){
+    balance = await CappedMintableToken.methods.balanceOf(b_addresses[i]).call();
+    console.log(i+' ' +b_addresses[i] +': '+ balance);
+  }
+  balance = await CappedMintableToken.methods.balanceOf(TokenDistribution.options.address).call();
+  console.log('Total balance: ' + balance);
 };
-run();
 
-function deployContract(contractPath, acount, args){
+//helper function to deloy contracts
+function deployContract(contractPath, account, args){
   return new Promise((resolve,reject)=>{
     // Read the JSON file contents
     let contractJsonContent = fs.readFileSync(contractPath, 'utf8');    
@@ -60,7 +68,7 @@ function deployContract(contractPath, acount, args){
       arguments: args
     })
     .send({
-      from: acount.address,
+      from: account.address,
       gas: 2000000,
     })
     .then((newContractInstance) => {
