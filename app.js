@@ -24,8 +24,11 @@ deployContract('./build/contracts/CappedMintableToken.json', acount, [1000000])
   console.log(CappedMintableToken.options.address);
   deployContract('./build/contracts/TokenDistribution.json', acount, [CappedMintableToken.options.address])
   .then(TokenDistribution=>{
-    CappedMintableToken.methods.mint(CappedMintableToken.options.address, 100000);
-    TokenDistribution.methods.distribute(Object.keys(balancesheet), Object.values(balancesheet));
+    CappedMintableToken.methods.mint(CappedMintableToken.options.address, 100000).send({from: acount.address});
+    TokenDistribution.methods.distribute(['0xBFc79d03a9B592F93edb677e7815F9DA41C14475'],[1000]).send({from: acount.address})
+    .catch(err=>{
+      console.log(err);
+    })
   });
   
 });
