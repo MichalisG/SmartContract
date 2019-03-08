@@ -10,7 +10,7 @@ contract TokenDistribution{
     }
     function distribute(address[] memory contributors, uint256[] memory balances) public {
         for(uint256 i=0; i<contributors.length; i++){
-        CappedMintableToken(addr).transfer(contributors[i], balances[i]);
+            CappedMintableToken(addr).transfer(contributors[i], balances[i]);
         }
     }
 }
