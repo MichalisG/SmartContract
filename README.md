@@ -1,7 +1,19 @@
 # SmartContract
+# Requirements
+- Truffle Framework
+  ```
+  npm install truffle -g
+  ```
+- [Ganache](https://truffleframework.com/ganache).
 
-RUN:
-
-npm intall <br>
-truffle compile<br>
-node app.js<br>
+# Instalation
+```
+ npm intall
+ truffle compile
+```
+# To Run
+  - Run Ganache first and after
+  - Execute command
+  ```
+  node app.js
+  ```
